@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>input() feed test</title>
+<style>
+  :root{--or:#c2622a;--or-hi:#e07b38;--ink:#eae8e3;--dim:#a29e96;--faint:#6f6a63;
+        --line:#ffffff1f;--code:#00020699;--ok:#4fb07a;--bad:#d4564a}
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:#0b0d12;color:var(--ink);
+       font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+  .wrap{max-width:46rem;margin:0 auto;padding:3rem 1.4rem 5rem}
+  .eyebrow{font:700 .66rem/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--or-hi);margin:0 0 .8rem}
+  h1{font-size:1.6rem;margin:0 0 .5rem;font-weight:600}
+  .lede{color:var(--dim);margin:0 0 1.8rem}
+  .card{background:#12151cE6;border:1px solid var(--line);border-radius:12px;
+        padding:1.1rem 1.2rem;margin-bottom:1rem}
+  h2{font-size:1rem;margin:0 0 .5rem;font-weight:600}
+  .feed{display:flex;gap:.4rem;flex-wrap:wrap;margin:.5rem 0 .9rem}
+  .feed span{font:600 .8rem ui-monospace,Menlo,monospace;padding:.32rem .6rem;
+    border-radius:6px;background:#5fa8d018;border:1px solid #5fa8d040;color:#bcd4e2}
+  .feed span.used{opacity:.35;text-decoration:line-through}
+  textarea,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  textarea{width:100%;padding:.6rem .7rem;font-size:.82rem;line-height:1.6;
+    background:var(--code);color:var(--ink);border:1px solid var(--line);
+    border-radius:7px;resize:vertical;min-height:8rem}
+  .row{display:flex;gap:.5rem;align-items:center;margin-top:.6rem;flex-wrap:wrap}
+  button{font:600 .82rem ui-sans-serif,system-ui,sans-serif;padding:.5rem 1.05rem;
+    color:#160b04;background:var(--or-hi);border:0;border-radius:7px;cursor:pointer}
+  button:disabled{opacity:.45;cursor:default}
+  button.ghost{background:#ffffff0f;color:var(--dim);border:1px solid var(--line)}
+  .lab{margin:.9rem 0 .3rem;font:700 .6rem/1 ui-sans-serif,system-ui,sans-serif;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  pre.out{margin:0;padding:.6rem .72rem;min-height:2.6rem;font-size:.8rem;line-height:1.6;
+    background:var(--code);border:1px solid var(--line);border-radius:7px;
+    white-space:pre-wrap;word-break:break-word;color:#cfe8dd}
+  pre.out.err{color:#e8917f}
+  .status{font:600 .72rem ui-monospace,Menlo,monospace;color:var(--faint);
+    border:1px solid var(--line);border-radius:6px;padding:.35rem .6rem;display:inline-block}
+  .status.ok{color:var(--ok);border-color:#4fb07a55}
+  .status.bad{color:var(--bad);border-color:#d4564a55}
+  .verdict{margin:.7rem 0 0;font-size:.88rem}
+  .verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+  .note{margin:1.6rem 0 0;padding-top:1rem;border-top:1px solid var(--line);
+    color:var(--faint);font-size:.84rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">CS 115 &middot; Lab 02 diagnostic</p>
+  <h1>Does <code>input()</code> work in the browser?</h1>
+  <p class="lede">Lab 2 wants students to read values with <code>input()</code>. In a browser there is no
+  terminal to wait on, so the puzzle supplies the values instead &mdash; the &ldquo;feed&rdquo; below.
+  This page checks that the mechanism actually works before I build a lab on it.</p>
+
+  <div class="card">
+    <span class="status" id="pyStatus">Python: loading…</span>
+  </div>
+
+  <div class="card">
+    <h2>Test 1 &mdash; reading two values in order</h2>
+    <p style="color:var(--dim);font-size:.88rem;margin:.2rem 0 0">
+      The feed holds these values. Each <code>input()</code> takes the next one.</p>
+    <div class="feed" id="feed1"><span>4</span><span>3</span></div>
+    <textarea id="code1">down = int(input())
+to_go = int(input())
+
+print(down, to_go)</textarea>
+    <div class="row">
+      <button id="run1">Run</button>
+      <span style="color:var(--faint);font-size:.82rem">expects <code>4 3</code></span>
+    </div>
+    <p class="lab">Output</p>
+    <pre class="out" id="out1"></pre>
+    <p class="verdict" id="v1"></p>
+  </div>
+
+  <div class="card">
+    <h2>Test 2 &mdash; input() returns text, not a number</h2>
+    <p style="color:var(--dim);font-size:.88rem;margin:.2rem 0 0">
+      The lesson students need to hit. Without <code>int()</code> these concatenate.</p>
+    <div class="feed" id="feed2"><span>17</span><span>9</span></div>
+    <textarea id="code2">a = input()
+b = input()
+
+print(a + b)
+print(int(a) + int(b))</textarea>
+    <div class="row">
+      <button id="run2">Run</button>
+      <span style="color:var(--faint);font-size:.82rem">expects <code>179</code> then <code>26</code></span>
+    </div>
+    <p class="lab">Output</p>
+    <pre class="out" id="out2"></pre>
+    <p class="verdict" id="v2"></p>
+  </div>
+
+  <div class="card">
+    <h2>Test 3 &mdash; running out of feed</h2>
+    <p style="color:var(--dim);font-size:.88rem;margin:.2rem 0 0">
+      A student calls <code>input()</code> more times than the puzzle supplies. This should fail
+      cleanly with a readable message, not hang the page.</p>
+    <div class="feed" id="feed3"><span>12</span></div>
+    <textarea id="code3">first  = input()
+second = input()
+
+print(first, second)</textarea>
+    <div class="row">
+      <button id="run3">Run</button>
+      <span style="color:var(--faint);font-size:.82rem">expects a clear error, and the page stays alive</span>
+    </div>
+    <p class="lab">Output</p>
+    <pre class="out" id="out3"></pre>
+    <p class="verdict" id="v3"></p>
+  </div>
+
+  <p class="note">If all three behave, Lab 2 gets <code>input()</code> puzzles. If any of them hang the
+  page or produce something strange, tell me what you saw and I will use plain variables instead.</p>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var py=null;
+  var st=document.getElementById("pyStatus");
+
+  var TESTS = [
+    {n:1, feed:["4","3"],  want:"4 3"},
+    {n:2, feed:["17","9"], want:"179\n26"},
+    {n:3, feed:["12"],     want:null}   // expected to raise
+  ];
+
+  import("https://cdn.jsdelivr.net/pyodide/v314.0.6/full/pyodide.mjs")
+    .then(function(m){ return m.loadPyodide(); })
+    .then(function(p){
+      py=p; st.textContent="Python: ready"; st.className="status ok";
+      TESTS.forEach(wire);
+    })
+    .catch(function(e){
+      st.textContent="Python: offline — "+String(e.message||e);
+      st.className="status bad";
+    });
+
+  function wire(t){
+    var btn=document.getElementById("run"+t.n);
+    var out=document.getElementById("out"+t.n);
+    var ver=document.getElementById("v"+t.n);
+    var chips=document.getElementById("feed"+t.n).children;
+    btn.onclick=function(){
+      for(var c=0;c<chips.length;c++) chips[c].classList.remove("used");
+      var queue=t.feed.slice(), used=0, buf=[];
+
+      // the feed: each input() call takes the next value
+      py.setStdin({ stdin:function(){
+        if(queue.length===0) return null;          // null = end of input
+        var v=queue.shift();
+        if(chips[used]) chips[used].classList.add("used");
+        used++;
+        return v + "\n";
+      }});
+      py.setStdout({batched:function(s){buf.push(s);}});
+      py.setStderr({batched:function(s){buf.push(s);}});
+
+      var threw=null;
+      try{ py.runPython(document.getElementById("code"+t.n).value); }
+      catch(e){ threw=String(e.message||e); }
+
+      var got=buf.join("\n");
+      if(threw){
+        out.textContent=threw; out.classList.add("err");
+      } else {
+        out.textContent=got||"(no output)"; out.classList.remove("err");
+      }
+
+      if(t.want===null){
+        var good = !!threw && /EOF|input/i.test(threw);
+        ver.textContent = good
+          ? "PASS — failed cleanly and the page is still responsive."
+          : (threw ? "Raised, but the message may confuse a student. Tell me what it says."
+                   : "No error raised — worth telling me, the feed may be silently repeating.");
+        ver.className = "verdict " + (good?"ok":"bad");
+      } else {
+        var norm=function(x){return String(x).trim().replace(/\s+/g," ");};
+        var ok = !threw && norm(got)===norm(t.want);
+        ver.textContent = ok ? "PASS" : "FAIL — expected " + JSON.stringify(t.want);
+        ver.className = "verdict " + (ok?"ok":"bad");
+      }
+    };
+  }
+})();
+</script>
+</body>
+</html>
